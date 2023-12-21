@@ -24,7 +24,5 @@ apt install certbot python3-certbot-nginx -y
 
 certbot --nginx -d $NGINX_DOMAIN -d www.$NGINX_DOMAIN
 
-echo "now you can check your domain in check host :)"
-
 
 

@@ -8,9 +8,23 @@ else
   echo "ok lets continue!!"
 fi
 
+read -p "Enter your domain and then set A record for root domain and www =>" NGINX_DOMAIN
 
+docker run -d --network host --name nginx-server-test nginx:latest
 
+docker exec -it nginx-server-test bash
 
+apt update -y && apt upgrade -y
+
+sed -i "s/server_name  localhost;/server_name  ${NGINX_DOMAIN} www.${NGINX_DOMAIN};/" /etc/nginx/conf.d/default.conf
+
+nginx -s reload
+
+apt install certbot python3-certbot-nginx -y
+
+certbot --nginx -d $NGINX_DOMAIN -d www.$NGINX_DOMAIN
+
+echo "now you can check your domain in check host :)"
 
 
 

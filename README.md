@@ -1,13 +1,13 @@
 # server check
 
-you can check you server and make sure it is usefull in all country and ip is white.
+You can check your server and make sure it is useful in all countries and the IP is white.
 
-this bash script first of all install docker and python and other usefull dependencies. then you should write your domain and system
-will start a removable nginx (nginx-server-test) and set your domain in nginx.
-after that you should go to your registrar and set a record for your server ip in @ and www.
+This bash script first of all installs Docker, Python, and other useful dependencies.
 
-then script ask you about record setting and if you set the record you can answer yes and ssl will be generate for  your domains.
+Then you should write your domain, and the system will start a removable nginx (nginx-server-test) and set your domain in nginx. After that, you should go to your registrar and set a record for your server IP in @ and www.
 
-after that you can go to this site (https://check-host.net/) and write your domain and check your server.
+Then the script asks you about record setting, and if you set the record, you can answer yes and SSL will be generated for your domains.
 
-if you like this script give it a bigie star :)
+After that, you can go to this site (https://check-host.net/) and write down your domain and check your server.
+
+If you like this script, give it a big star.

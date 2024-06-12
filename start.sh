@@ -3,7 +3,7 @@
 read -p "Do you want install basic server configurations(docker, python, ...)?(y/n)" CONFIG
 
 if [ $CONFIG = "y" ]; then
-  git clone "https://github.com/mohammad76/config-server" /home/server-config/ && cd /home/server-config/ && bash config.sh
+  git clone "https://github.com/mohammad76/config-server" /tmp/server-config/ && cd /tmp/server-config/ && bash config.sh
 else
   echo "ok lets continue!!"
 fi

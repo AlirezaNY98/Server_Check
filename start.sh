@@ -32,12 +32,14 @@ if [ $CONFIG = "y" ]; then
       exit 1
   fi
 
-  # Add shecan dns 
+  # Add dns servers
   rm /etc/resolv.conf
   cat >/etc/resolv.conf <<EOF
 options timeout:1
 nameserver 178.22.122.100
 nameserver 185.51.200.2
+nameserver 10.202.10.202
+nameserver 10.202.10.102
 nameserver 8.8.8.8
 nameserver 1.1.1.1
 EOF
@@ -77,21 +79,22 @@ EOF
     "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
     "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
     tee /etc/apt/sources.list.d/docker.list > /dev/null
-  apt-get update
+  apt-get update -y
 
-  apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 
 else
   echo "ok lets continue!!"
 fi
 
-# Check docker
+# Check docker install
 if ! docker --version; then
-	echo "${RED} ERROR: Docker is not installed, run command again and install basic config. ${NC}"
+	echo "${RED}ERROR: Docker is not installed, run command again and install basic config.${NC}"
 	exit 1
 fi
 
+# run nginx for domain check
 docker run -d --network host --name nginx-server-test nginx:latest
 
 read -p "First set \'A\' record for root domain and www and then enter your domain without www(exp: mydomain.com) =>" NGINX_DOMAIN

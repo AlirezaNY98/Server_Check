@@ -27,12 +27,8 @@ if [ $CONFIG = "y" ]; then
   os_version=""
   os_version=$(grep -i version_id /etc/os-release | cut -d \" -f2 | cut -d . -f1)
 
-  if [[ "${release}" == "ubuntu" ]]; then
-      if [[ ${os_version} -lt 20 ]]; then
-          echo -e "${RED} Please use Ubuntu 20 or higher. ${NC}\n" && exit 1
-      fi
-  else
-      echo -e "${RED}Your operating system is not supported by this script. Please use Ubuntu 20 or higher. ${NC}\n"
+  if [[ "${release}" != "ubuntu" ]]; then
+      echo -e "${RED}Your operating system is not supported by this script. Please use Ubuntu. ${NC}\n"
       exit 1
   fi
 
@@ -60,6 +56,7 @@ EOF
   echo -e "${GREEN}Server Country: ${COUNTRY} ${NC}"
 
   echo -e "${GREEN}set Tehran Timezone ...${NC}"
+  apt instal tzdate
   TZ=Asia/Tehran
   ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
@@ -72,29 +69,21 @@ EOF
 
   echo -e "${GREEN}install docker ....${NC}"
 
-  for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+  for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do apt-get remove $pkg; done
   apt update -y
   DEBIAN_FRONTEND=noninteractive apt install -y ca-certificates curl gnupg
   install -m 0755 -d /etc/apt/keyrings
-  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --batch --yes --dearmor -o /etc/apt/keyrings/docker.gpg
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --batch --yes --dearmor -o /etc/apt/keyrings/docker.gpg
   chmod a+r /etc/apt/keyrings/docker.gpg
 
   echo \
     "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
     "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    tee /etc/apt/sources.list.d/docker.list > /dev/null
   apt-get update
 
-  if [ $os_version = "20" ]; then
-      VERSION_STRING=5:25.0.3-1~ubuntu.20.04~focal
-      DEBIAN_FRONTEND=noninteractive apt install -y docker-ce=$VERSION_STRING docker-ce-cli=$VERSION_STRING containerd.io docker-buildx-plugin docker-compose-plugin
-  elif [ $os_version = "22" ]; then
-      VERSION_STRING=5:25.0.3-1~ubuntu.22.04~jammy
-     DEBIAN_FRONTEND=noninteractive apt install -y docker-ce=$VERSION_STRING docker-ce-cli=$VERSION_STRING containerd.io docker-buildx-plugin docker-compose-plugin
-  else
-      echo -e "${RED} not proper version, please check your ubuntu version first.${NC}"
-      exit 1
-  fi
+  apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
 
 else
   echo "ok lets continue!!"

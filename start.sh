@@ -32,7 +32,7 @@ if [ $CONFIG = "y" ]; then
       exit 1
   fi
 
-  echo -e "${GREEN}add base dns ...${NC}"
+  # Add shecan dns 
   rm /etc/resolv.conf
   cat >/etc/resolv.conf <<EOF
 options timeout:1
@@ -55,20 +55,17 @@ EOF
   echo -e "${GREEN}Server IP: ${SERVER_IP} ${NC}"
   echo -e "${GREEN}Server Country: ${COUNTRY} ${NC}"
 
-  echo -e "${GREEN}set Tehran Timezone ...${NC}"
-  apt instal tzdate
-  TZ=Asia/Tehran
-  ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
   echo -e "${GREEN}updating os ...${NC}"
   apt update -y
 
+  # Set tehran timezone
+  apt install tzdata
+  ln -sf /usr/share/zoneinfo/Asia/Tehran /etc/localtime
+  dpkg-reconfigure -fnoninteractive tzdata
 
-  echo -e "${GREEN}install useful packages ....${NC}"
-  DEBIAN_FRONTEND=noninteractive apt install -y iptables-persistent sqlite3 pigz nano jq vsftpd vim htop net-tools iputils-ping apache2-utils rkhunter supervisor net-tools htop fail2ban wget zip nmap git letsencrypt build-essential iftop dnsutils python3-pip dsniff grepcidr iotop rsync atop software-properties-common
+  DEBIAN_FRONTEND=noninteractive apt install -y python3-pip vim rsync htop nano wget net-tools
 
-  echo -e "${GREEN}install docker ....${NC}"
-
+  # install docker
   for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do apt-get remove $pkg; done
   apt update -y
   DEBIAN_FRONTEND=noninteractive apt install -y ca-certificates curl gnupg

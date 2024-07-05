@@ -43,7 +43,9 @@ nameserver 10.202.10.102
 nameserver 8.8.8.8
 nameserver 1.1.1.1
 EOF
-
+  # disable change for resolve.conf file
+  systemctl disable --now systemd-resolved.service
+  
   SERVER_IP=$(hostname -I | awk '{print $1}')
   IP_CHECK_URL="https://api.country.is/$SERVER_IP"
   CHECK_IP=$(curl -s "$IP_CHECK_URL")

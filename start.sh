@@ -105,8 +105,8 @@ read -p "First set \'A\' record for root domain and www and then enter your doma
 
 docker exec -it nginx-server-test /bin/bash -c "apt update -y \
 && apt upgrade -y \
-&& sed -i \"s/server_name  localhost;/server_name  ${NGINX_DOMAIN} www.${NGINX_DOMAIN};/\" /etc/nginx/conf.d/default.conf \
+&& sed -i \"s/server_name  localhost;/server_name  ${NGINX_DOMAIN};/\" /etc/nginx/conf.d/default.conf \
 && nginx -s reload \
 && apt install certbot python3-certbot-nginx -y \
-&& certbot --nginx -d $NGINX_DOMAIN -d www.$NGINX_DOMAIN \
+&& certbot --nginx -d $NGINX_DOMAIN \
 && echo \"all things set up you can check your domain and then write exit for delete nginx docker.\""

@@ -23,15 +23,11 @@ if [ $CONFIG = "y" ]; then
       echo "${RED}Failed to check the system OS, please contact the server author!${NC}" >&2
      exit 1
   fi
-
-  os_version=""
-  os_version=$(grep -i version_id /etc/os-release | cut -d \" -f2 | cut -d . -f1)
-
+  
   if [[ "${release}" != "ubuntu" ]]; then
       echo -e "${RED}Your operating system is not supported by this script. Please use Ubuntu. ${NC}\n"
       exit 1
   fi
-
 
   SERVER_IP=$(hostname -I | awk '{print $1}')
   IP_CHECK_URL="https://api.country.is/$SERVER_IP"
